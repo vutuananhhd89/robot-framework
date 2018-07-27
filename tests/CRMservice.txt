@@ -1,0 +1,36 @@
+*** Settings ***
+Library	Collections
+Library	RequestsLibrary
+
+*** Variables ***
+
+${js_string1}=    {
+...                  "random": {
+...                       "passwd_change_date": "2016-12-16T11:26:26",
+...                       "passwd_fail_count": 0,
+...                       "password": "123456789",
+...                       "status": 0,
+...                       "user_name": "test@test.com"
+...                  }
+...              }
+
+${js_string2}=    {
+...                       "passwd_change_date": "2016-12-16T11:26:26",
+...                       "passwd_fail_count": 0,
+...                       "password": "123456789",
+...                       "status": 0,
+...                       "user_name": "test@test.com"
+...              }
+
+${js_string3}=   {
+...                 "fname": "adam5",
+...                 "lname": "vu5"
+...               }
+
+*** Test cases ***
+Post Request CRM
+    [Tags]  Create Ticket
+    Create Session  CRMservice  http://develop.crmservice.s3.stuffio.com/api/ticket
+    &{params}=   Create Dictionary   user_email=robot@paymentwall.com     type=risk   problem_class=missing_goods   author_type=user
+    ${resp}=  Post Request  CRMservice  /post		params=${params}
+    Should Be Equal As Strings  ${resp.status_code}  200

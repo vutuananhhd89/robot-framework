@@ -1,0 +1,36 @@
+*** Settings ***
+Library	Collections
+Library	RequestsLibrary
+
+*** Variables ***
+
+${js_string1}=    {
+...                  "random": {
+...                       "passwd_change_date": "2016-12-16T11:26:26",
+...                       "passwd_fail_count": 0,
+...                       "password": "123456789",
+...                       "status": 0,
+...                       "user_name": "test@test.com"
+...                  }
+...              }
+
+${js_string2}=    {
+...                       "passwd_change_date": "2016-12-16T11:26:26",
+...                       "passwd_fail_count": 0,
+...                       "password": "123456789",
+...                       "status": 0,
+...                       "user_name": "test@test.com"
+...              }
+
+${js_string3}=   {
+...                 "fname": "adam5",
+...                 "lname": "vu5"
+...               }
+
+*** Test cases ***
+Get Requests
+    [Tags]  get
+    Create Session  google  http://www.google.com
+    Create Session  github  https://api.github.com   verify=${CURDIR}${/}cacert.pem
+    ${resp}=  Get Request  google  /
+    Should Be Equal As Strings  ${resp.status_code}  200
